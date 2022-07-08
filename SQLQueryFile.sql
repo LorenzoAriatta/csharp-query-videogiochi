@@ -86,9 +86,18 @@
 -- 
 -- ```
 -- 1- Selezionare i dati di tutti giocatori che hanno scritto almeno una recensione, mostrandoli una sola volta (996)
--- 
+	SELECT player_id
+	FROM reviews
+	INNER JOIN players
+	ON players.id = reviews.player_id 
+	GROUP BY player_id;
 -- 2- Sezionare tutti i videogame dei tornei tenuti nel 2016, mostrandoli una sola volta (226)
--- 
+	SELECT videogame_id
+	FROM tournament_videogame
+	INNER JOIN tournaments
+	ON tournaments.id = tournament_videogame.tournament_id
+	WHERE tournaments.year = 2016
+	GROUP BY videogame_id;
 -- 3- Mostrare le categorie di ogni videogioco
 -- SELECT v.id AS videogame_id, v.name AS videogame_name, v.release_date, c.id AS category_id, c.name AS category_name (1718)
 -- 
