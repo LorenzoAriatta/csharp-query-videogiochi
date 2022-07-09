@@ -100,12 +100,10 @@
 	GROUP BY videogame_id;
 -- 3- Mostrare le categorie di ogni videogioco
 -- SELECT v.id AS videogame_id, v.name AS videogame_name, v.release_date, c.id AS category_id, c.name AS category_name (1718)
-	--SELECT videogame_id, videogames.name, videogames.release_date, categories.id, categories.name
-	--FROM videogames, categories
-	--INNER JOIN category_videogame
-	--ON category_videogame.videogame_id = videogame_id
-	--INNER JOIN categories
-	--ON categories.id = category_id;
+	SELECT videogames.*, categories.*
+	FROM videogames
+	INNER JOIN category_videogame ON videogames.id = videogame_id
+	INNER JOIN categories ON categories.id = category_id;
 -- 4- Selezionare i dati di tutte le software house che hanno rilasciato almeno un gioco dopo il 2020, mostrandoli una sola volta (6)
 	SELECT software_houses.name
 	FROM software_houses
@@ -139,10 +137,13 @@
 	WHERE player_tournament.player_id = players.id AND players.name LIKE 'S%'
 	GROUP BY videogames.id, videogames.name;
 -- 8- Selezionare le città in cui è stato giocato il gioco dell'anno del 2018 (36)
-	--SELECT tournaments.city
-	--FROM tournaments
-	--INNER JOIN tournament_videogame ON tournament_videogame.tournament_id = tournaments.id
-	--INNER JOIN videogames ON ;
+	SELECT tournaments.city
+	FROM tournaments
+	INNER JOIN tournament_videogame ON tournaments.id = tournament_videogame.tournament_id
+	INNER JOIN videogames ON videogames.id = tournament_videogame.videogame_id
+	INNER JOIN award_videogame ON award_videogame.videogame_id = videogames.id
+	INNER JOIN awards ON awards.id = award_videogame.award_id
+	WHERE YEAR(videogames.release_date) = 2018 AND awards.name = 'Gioco dell''anno';
 -- 9- Selezionare i giocatori che hanno giocato al gioco più atteso del 2018 in un torneo del 2019 (3306)
 	SELECT players.nickname
 	FROM players
